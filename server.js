@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 //const qr = require('qr-image');
 const ejs = require('ejs');
 const app = express();
+app.use("/website", express.static(__dirname + '/website'));
 
 app.set('view engine', 'ejs');
 // Set static folder
@@ -20,9 +21,6 @@ const server = app.listen(port, () => {
   console.log(`Listening on http://localhost:${port}`);
 });
 
-app.get('/teste', function (req, res) {
-  res.send("Hello World");
-});
 
 const path = require('path');
 
