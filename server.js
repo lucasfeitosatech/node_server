@@ -2,10 +2,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 //const qr = require('qr-image');
-// const ejs = require('ejs');
+const ejs = require('ejs');
 const app = express();
 
-// app.set('view engine', 'ejs');
+app.set('view engine', 'ejs');
 // Set static folder
 // app.use(express.static('static'));
 
