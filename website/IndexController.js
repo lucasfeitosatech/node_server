@@ -1,5 +1,5 @@
 module.exports = {
     async index(req,res) {
-        res.render('index');
+        res.render(__dirname + '/index');
     }
 };
