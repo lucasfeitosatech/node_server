@@ -1,0 +1,138 @@
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <title>QR Code Generator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0
+    }
+  
+    body {
+  
+      background: #c5deea;
+      /* Old browsers */
+      background: -moz-linear-gradient(top, #c5deea 0%, #8abbd7 55%, #066dab 100%);
+      /* FF3.6-15 */
+      background: -webkit-linear-gradient(top, #c5deea 0%, #8abbd7 55%, #066dab 100%);
+      /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom, #c5deea 0%, #8abbd7 55%, #066dab 100%);
+      /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c5deea', endColorstr='#066dab', GradientType=0);
+      /* IE6-9 */
+    }
+  
+    #qr {
+      margin-top: 20px;
+      text-align: center;
+      min-width: 200px;
+      min-height: 200px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 align-self-center" style="margin-top: 13%;">
+        <h1 class="text-center text-light">Convert your file to QR code</h1>
+        <form>
+          <div class="form-group">
+            <label for="input_text"></label>
+            <!-- <textarea maxlength="388" id="input_image" class="md-textarea form-control" rows="7"></textarea> -->
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="customFile">
+              <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+          </div>
+          <button type="button" id="gen" class="btn btn-primary btn-block">Generate QR Code</button>
+          <div id="qr"></div>
+        </form>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-6 align-self-center" style="margin-top: 20px;margin-bottom:5px;margin-left: 30%;">
+
+        <img src="" id="qr-code-img" class="img-responsive text-center d-none" alt="Image">
+
+      </div>
+    </div>
+  </div>
+
+
+  <script src="//stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    </script>
+  <script>
+    document.querySelector('#gen').addEventListener('click', function () {
+      // Get the text from input
+      let fileInput = document.getElementById("customFile");
+
+      // files is a FileList object (similar to NodeList)
+      let files = fileInput.files;
+      let blob = new Blob([files[0]], { type: 'image/png' })
+
+      // object for allowed media types
+      let accept = {
+        binary: ["image/png", "image/jpeg"],
+        text: ["text/plain", "text/css", "application/xml", "text/html"]
+      };
+
+      // if file type could be detected
+      if (files[0] !== null) {
+        var r = new FileReader();
+        r.onload = function () {
+
+          var txt = r.result;
+          var bytes = new Uint8Array(txt);
+          console.log(JSON.stringify(bytes));
+          if (txt !== '') {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+              if (this.readyState == 4 && this.status == 200) {
+                document.getElementById('qr').innerHTML = this.responseText;
+                fileInput.value = "";
+              }
+            };
+            xhttp.open("POST", "/filetracking", true);
+            var blob = new Blob([txt], { type: 'text/plain' });
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.send(JSON.stringify(bytes));
+          } else {
+            alert("Please, Insert a valid text");
+          }
+
+        };
+        r.readAsArrayBuffer(blob);
+      }
+
+
+      // Do not send request if field is empty
+
+
+    });
+  </script>
+  <script>
+    $(".custom-file-input").on("change", function () {
+      var fileName = $(this).val().split("\\").pop();
+      $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+    $("input[type='submit']").click(function () {
+      var $fileUpload = $("input[type='file']");
+      if (parseInt($fileUpload.get(0).files.length) > 2) {
+        alert("You can only upload a maximum of 2 files");
+      }
+    });
+  </script>
+</body>
+
+</html>
