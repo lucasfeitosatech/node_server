@@ -1,0 +1,28 @@
+{
+  "name": "com.lfeitosa.server",
+  "version": "1.0.0",
+  "description": "A Node server for multiple applications",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucasfeitosatech/node_server.git"
+  },
+  "keywords": [
+    "Node",
+    "server"
+  ],
+  "author": "Lucas Feitosa de Freitas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucasfeitosatech/node_server/issues"
+  },
+  "homepage": "https://github.com/lucasfeitosatech/node_server#readme"
+}
